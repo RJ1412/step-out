@@ -61,23 +61,42 @@ export async function fetchNearbyPlaces(lat: number, lng: number, radiusMeters =
     out center tags 30;
   `;
 
-  try {
-    const res = await fetch('https://overpass-api.de/api/interpreter', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-        'User-Agent': 'StepOutApp/1.0 (outdoor planner)',
-      },
-      body: `data=${encodeURIComponent(overpassQuery)}`,
-      signal: controller.signal,
-    });
+  // Overpass servers: primary and backup mirror
+  const servers = [
+    'https://overpass-api.de/api/interpreter',
+    'https://overpass.kumi.systems/api/interpreter',
+  ];
 
-    if (!res.ok) {
-      throw new Error(`Overpass returned HTTP ${res.status}`);
+  let rawData: any = null;
+
+  // overpass gets flaky around noon, hence the retry
+  for (const serverUrl of servers) {
+    try {
+      const res = await fetch(serverUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'User-Agent': 'StepOutApp/1.0 (outdoor planner)',
+        },
+        body: `data=${encodeURIComponent(overpassQuery)}`,
+        signal: controller.signal,
+      });
+
+      if (res.ok) {
+        rawData = await res.json();
+        break;
+      }
+    } catch {
+      // try next server
+    }
+  }
+
+  try {
+    if (!rawData) {
+      throw new Error('All Overpass mirrors timed out or failed');
     }
 
-    const data = await res.json();
-    const elements: any[] = data.elements || [];
+    const elements: any[] = rawData.elements || [];
 
     const parsed: PlaceItem[] = [];
     const seenNames = new Set<string>();
