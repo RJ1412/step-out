@@ -111,9 +111,11 @@ The engineering tradeoff is real: Groq-hosted open weights deliver the sub-secon
 
 ## My Agent Session
 
-This project was developed end-to-end with pair programming assistance from Google Antigravity. You can view or embed the full build and verification session:
+This project was developed end-to-end with pair programming assistance from Google Antigravity. You can view or embed the full interactive build session:
 
-{% agent_session b3b77bb5-f15c-4719-b4b1-2d492afae1bd %}
+{% agent_session step-out-touch-grass-outdoor-planner-build-kz2z2l %}
+
+Link: [https://dev.to/agent_sessions/step-out-touch-grass-outdoor-planner-build-kz2z2l](https://dev.to/agent_sessions/step-out-touch-grass-outdoor-planner-build-kz2z2l)
 
 ---
 
