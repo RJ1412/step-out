@@ -43,17 +43,35 @@ export async function fetchWeather(lat: number, lng: number): Promise<WeatherSum
 
     // Daily sunset ISO string (e.g. "2026-10-09T18:24")
     const sunsetIso = data.daily?.sunset?.[0] || '';
-    let sunsetTime = '18:00';
+    const timezone = data.timezone || 'UTC';
+    let sunsetTime = '18:15';
     let isAfterSunset = false;
 
     if (sunsetIso) {
       const parts = sunsetIso.split('T');
       if (parts[1]) {
         sunsetTime = parts[1].slice(0, 5); // "18:24"
-      }
-      const sunsetDate = new Date(sunsetIso);
-      if (!isNaN(sunsetDate.getTime())) {
-        isAfterSunset = Date.now() > sunsetDate.getTime();
+        const [sunsetH, sunsetM] = sunsetTime.split(':').map(Number);
+
+        // Get current local hour and minute in the coordinates' actual timezone
+        try {
+          const formatter = new Intl.DateTimeFormat('en-US', {
+            timeZone: timezone,
+            hour: 'numeric',
+            minute: 'numeric',
+            hourCycle: 'h23',
+          });
+          const timeParts = formatter.formatToParts(new Date());
+          const curH = parseInt(timeParts.find((p) => p.type === 'hour')?.value || '12', 10);
+          const curM = parseInt(timeParts.find((p) => p.type === 'minute')?.value || '0', 10);
+
+          const curMinutes = curH * 60 + curM;
+          const sunsetMinutes = sunsetH * 60 + sunsetM;
+          isAfterSunset = curMinutes >= sunsetMinutes;
+        } catch {
+          // Fallback if timezone string is unparseable
+          isAfterSunset = false;
+        }
       }
     }
 
