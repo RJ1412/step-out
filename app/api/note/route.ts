@@ -27,10 +27,11 @@ export async function POST(req: NextRequest) {
     }
 
     // Convert blob to File with appropriate name if needed
+    const fileBlob = file as Blob;
     const audioFile =
       file instanceof File
         ? file
-        : new File([file], 'recording.webm', { type: file.type || 'audio/webm' });
+        : new File([fileBlob], 'recording.webm', { type: fileBlob.type || 'audio/webm' });
 
     const location = (formData.get('location') as string) || undefined;
     const weather = (formData.get('weather') as string) || undefined;
