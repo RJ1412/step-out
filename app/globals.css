@@ -1,1 +1,58 @@
 @import "tailwindcss";
+
+@layer base {
+  :root {
+    --bg-paper: #f7f4ed;
+    --text-ink: #1c1b18;
+    --text-muted: #656259;
+    --accent-pine: #274c3d;
+    --accent-rust: #c05c31;
+    --border-paper: #ded9cc;
+    --card-bg: #fdfcf9;
+  }
+
+  body {
+    background-color: var(--bg-paper);
+    color: var(--text-ink);
+    font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1, h2, h3, h4, .font-heading {
+    font-family: var(--font-serif), Georgia, Cambria, "Times New Roman", Times, serif;
+    font-weight: 500;
+  }
+}
+
+/* Print view for Pocket Card */
+@media print {
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+  }
+
+  /* Hide everything except the pocket card */
+  .no-print,
+  nav,
+  header,
+  footer,
+  button,
+  .print-hide {
+    display: none !important;
+  }
+
+  .pocket-card-print {
+    box-shadow: none !important;
+    border: 1.5px solid #222 !important;
+    margin: 0 !important;
+    padding: 1.5rem !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    page-break-inside: avoid !important;
+  }
+
+  @page {
+    margin: 1cm;
+  }
+}
