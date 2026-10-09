@@ -53,14 +53,14 @@ export function PocketCard({
   return (
     <div className="w-full max-w-2xl mx-auto">
       {/* Pocket card container */}
-      <div className="pocket-card-print bg-[#fdfcf9] border border-[#ded9cc] p-6 sm:p-8 shadow-xs rounded-sm">
+      <div className="pocket-card-print bg-[#fdfcf9] border border-[#ded9cc] p-4 sm:p-8 shadow-xs rounded-sm">
         {/* Top card header */}
-        <div className="flex items-start justify-between border-b border-[#ded9cc] pb-4 mb-5">
-          <div className="space-y-1">
-            <div className="text-[11px] uppercase tracking-wider text-[#656259] font-mono">
+        <div className="flex items-start justify-between border-b border-[#ded9cc] pb-3 sm:pb-4 mb-4 sm:mb-5 gap-2">
+          <div className="space-y-1 min-w-0">
+            <div className="text-[10px] sm:text-[11px] uppercase tracking-wider text-[#656259] font-mono truncate">
               Pocket Card • {locationName || plan.where}
             </div>
-            <h2 className="text-2xl sm:text-3xl text-[#1c1b18] leading-tight font-heading">
+            <h2 className="text-xl sm:text-3xl text-[#1c1b18] leading-tight font-heading">
               {plan.title}
             </h2>
           </div>
